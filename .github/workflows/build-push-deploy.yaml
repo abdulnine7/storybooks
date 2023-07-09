@@ -30,6 +30,9 @@ jobs:
           export CLOUDSDK_PYTHON="/usr/bin/python3"
           echo $CLOUDSDK_PYTHON
           ls -l /usr/bin/
+          /usr/bin/python3 -c "print('Hi')"
+          $CLOUDSDK_PYTHON -c "print('Hello')"
+
 
       - name: Checkout
         uses: actions/checkout@v2

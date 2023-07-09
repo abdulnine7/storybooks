@@ -30,7 +30,7 @@ resource "mongodbatlas_database_user" "test" {
 
   roles {
     role_name     = "readWrite"
-    database_name = var.database_name
+    database_name = "${var.database_name}-${terraform.workspace}"
   }
 
 }

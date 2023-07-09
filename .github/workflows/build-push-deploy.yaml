@@ -35,10 +35,10 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
 
       # Install and setup python in the PATH
-      - run: |
-        sudo apt-get install python3.6
-        export CLOUDSDK_PYTHON="/usr/bin/python3"
-
+      - run: |-
+          sudo apt-get install python2.7
+          export CLOUDSDK_PYTHON="/usr/bin/python2"
+      
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       - run: |-

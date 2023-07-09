@@ -23,6 +23,11 @@ jobs:
       #     else 
       #       echo "ENVIRONMENT=prod" >> $GITHUB_ENV
       #     fi
+      # Install and setup python in the PATH
+      
+      - run: |-
+          sudo apt-get install python3.6
+          export CLOUDSDK_PYTHON="/usr/bin/python3"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,11 +38,6 @@ jobs:
           version: '363.0.0'
           service_account_key: ${{ secrets.GCE_SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
-
-      # Install and setup python in the PATH
-      - run: |-
-          sudo apt-get install python2.7
-          export CLOUDSDK_PYTHON="/usr/bin/python2"
       
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication

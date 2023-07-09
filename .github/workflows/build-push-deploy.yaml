@@ -25,10 +25,10 @@ jobs:
       #     fi
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # Setup gcloud CLI
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0main
         with:
           version: '290.0.1'
           service_account_key: ${{ secrets.GCE_SA_KEY }}

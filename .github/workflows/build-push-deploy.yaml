@@ -9,6 +9,7 @@ on:
 
 env:
   PROJECT_ID: devops-storybooks-391700
+  CLOUDSDK_PYTHON: /usr/bin/python3
 
 jobs:
   setup-build-publish-deploy:
@@ -33,6 +34,11 @@ jobs:
           version: '363.0.0'
           service_account_key: ${{ secrets.GCE_SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
+
+      # Install and setup python in the PATH
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
       # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication

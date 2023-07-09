@@ -24,10 +24,12 @@ jobs:
       #       echo "ENVIRONMENT=prod" >> $GITHUB_ENV
       #     fi
       # Install and setup python in the PATH
-      
+
       - run: |-
           sudo apt-get install python3.6
           export CLOUDSDK_PYTHON="/usr/bin/python3"
+          echo $CLOUDSDK_PYTHON
+          ls -l /usr/bin/
 
       - name: Checkout
         uses: actions/checkout@v2

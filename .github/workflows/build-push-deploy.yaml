@@ -26,12 +26,10 @@ jobs:
       # Install and setup python in the PATH
 
       - run: |-
-          sudo apt-get install python3.6
+          sudo apt-get install python3.8
           export CLOUDSDK_PYTHON="/usr/bin/python3"
           echo $CLOUDSDK_PYTHON
           ls -l /usr/bin/py*
-          /usr/bin/python3 -c "print('Hi')"
-          $CLOUDSDK_PYTHON -c "print('Hello')"
 
 
       - name: Checkout

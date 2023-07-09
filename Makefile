@@ -59,7 +59,7 @@ print:
 SSH_STRING=abdul@storybooks-vm-$(ENVIRONMENT)
 
 # Tags and version fof the docker inage that is th be build and pushed to Google Container Registry
-GITHUB_SHA=?latest
+GITHUB_SHA?=latest
 LOCAL_TAG=storybooks-app:$(GITHUB_SHA)
 REMOTE_TAG=gcr.io/$(PROJECT_ID)/$(LOCAL_TAG)
 CONTAINER_NAME=storybooks-api

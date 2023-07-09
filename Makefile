@@ -1,7 +1,10 @@
 #The project id in google cloud for the current porject
 PROJECT_ID=devops-storybooks-391700
+
 #The environment in use (staging or prod)
-ENVIRONMENT=staging
+# Commented this out as we are using the a function to check env everytime we run a function of make file.
+# ENVIRONMENT=staging 
+
 #The zone for the current project
 ZONE=us-central1-c
 
@@ -18,6 +21,12 @@ run-local:
 create-tf-backend-bucket:
 	gsutil mb -p $(PROJECT_ID) gs://$(PROJECT_ID)-terraform
 
+
+check-env:
+ifndef ENVIRONMENT
+	$(error ENVIRONMENT is undefined, Please set ENVIRONMENT to staging or prod)
+endif
+
 # Function to get Secrets from Google Secret Manager
 define get-secret
 $(shell gcloud secrets versions access latest --secret=$(1) --project=$(PROJECT_ID))
@@ -29,14 +38,14 @@ terraform-create-workspace:
 		terraform workspace new $(ENVIRONMENT)
 
 # Select the workspace for terraform and init terraform
-terraform-init:
+terraform-init: check-env
 	cd terraform && \
 		terraform workspace select $(ENVIRONMENT) && \
 		terraform init
 
 # Run terraform plan or apply
 ACTION?=plan #default action is plan
-terraform-action:
+terraform-action: check-env
 	cd terraform && \
 		terraform workspace select $(ENVIRONMENT) && \
 		terraform $(ACTION) \
@@ -47,7 +56,7 @@ terraform-action:
 			-var="cloudflare_api_token=$(call get-secret,cloudflare_api_token)"
 
 # Debugger for terraform
-print:
+print: check-env
 	@echo $(call get-secret,atlas_private_key)
 	@echo $(call get-secret,atlas_user_password)
 	@echo $(call get-secret,cloudflare_api_token)
@@ -66,22 +75,22 @@ CONTAINER_NAME=storybooks-api
 
 
 # Interactive SSH into the VM instance
-ssh:
+ssh: check-env
 	gcloud compute ssh $(SSH_STRING) --project=$(PROJECT_ID) --zone=$(ZONE)
 
 # Run specific command on the VM instance
-ssh-cmd:
+ssh-cmd: check-env
 	@gcloud compute ssh $(SSH_STRING) --project=$(PROJECT_ID) --zone=$(ZONE) --command="$(CMD)"
 
 
-build:
+build: check-env
 	docker build --platform=linux/amd64 -t $(LOCAL_TAG) .
 
-push:
+push: check-env
 	docker tag $(LOCAL_TAG) $(REMOTE_TAG)
 	docker push $(REMOTE_TAG)
 
-deploy:
+deploy: check-env
 	$(MAKE) ssh-cmd CMD='docker-credential-gcr configure-docker'
 	@echo "Pulling the latest image from GCR"
 	$(MAKE) ssh-cmd CMD='docker pull $(REMOTE_TAG)'

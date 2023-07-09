@@ -16,33 +16,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Set ENVIRONMENT
-      #   run: |-
-      #     if [ ${GITHUB_REF##*/} = "master" ]; then
-      #       echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-      #     else 
-      #       echo "ENVIRONMENT=prod" >> $GITHUB_ENV
-      #     fi
-      # Install and setup python in the PATH
+      - name: Set ENVIRONMENT
+        run: |-
+          if [ ${GITHUB_REF##*/} = "master" ]; then
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          else 
+            echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+          fi
 
-      # - run: |-
-      #     sudo apt-get install python3
-      #     export CLOUDSDK_PYTHON="/usr/bin/python3"
-      #     echo $CLOUDSDK_PYTHON
-      #     ls -l /usr/bin/py*
-
+      # Install Python 3.9
       - name: Setup python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      # Set python in path
       - name: Export gcloud related env variable
         run: export CLOUDSDK_PYTHON="/usr/bin/python3"
 
+      # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Setup gcloud CLI
+      # Setup gcloud CLI with the provided credentials in the ubuntu-latest defined above
       - uses: google-github-actions/setup-gcloud@v0
         with:
           version: '318.0.0'

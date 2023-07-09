@@ -25,11 +25,20 @@ jobs:
       #     fi
       # Install and setup python in the PATH
 
-      - run: |-
-          sudo apt-get install python3
-          export CLOUDSDK_PYTHON="/usr/bin/python3"
-          echo $CLOUDSDK_PYTHON
-          ls -l /usr/bin/py*
+      # - run: |-
+      #     sudo apt-get install python3
+      #     export CLOUDSDK_PYTHON="/usr/bin/python3"
+      #     echo $CLOUDSDK_PYTHON
+      #     ls -l /usr/bin/py*
+
+      - name: Setup python
+          uses: actions/setup-python@v4
+          with:
+            python-version: '3.9'
+
+      - name: Export gcloud related env variable
+          run: export CLOUDSDK_PYTHON="/usr/bin/python3"
+
 
 
       - name: Checkout

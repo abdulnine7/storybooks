@@ -23,7 +23,7 @@ resource "mongodbatlas_cluster" "mongo_cluster" {
 
 # Database User
 resource "mongodbatlas_database_user" "test" {
-  username           = "storyboks-user-${terraform.workspace}"
+  username           = "storybooks-user-${terraform.workspace}"
   password           = var.atlas_user_password
   project_id         = var.atlas_project_id
   auth_database_name = "admin"
